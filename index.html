@@ -4,345 +4,96 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Saya Mahir - Belajar 3M</title>
-    <!-- Font Awesome 6 (Ikon) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <style>
-        /* ===== RESET & GLOBAL ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Comic Sans MS', 'Chalkboard SE', cursive, sans-serif;
-        }
+        /* ===== RESET & GLOBAL (sama seperti sebelumnya) ===== */
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI','Comic Sans MS','Chalkboard SE',cursive,sans-serif; }
+        body { background-color:var(--bg); color:var(--text); transition:background 0.3s,color 0.3s; min-height:100vh; }
+        :root { --bg:#f0f9ff; --card:#ffffff; --text:#1a2a3a; --text-light:#4a5a6a; --primary:#4aa3df; --red:#ff6b6b; --yellow:#ffd93d; --green:#6bcb77; --shadow:0 8px 24px rgba(0,0,0,0.08); --radius:28px; --nav-bg:rgba(255,255,255,0.75); --border:#d0e8f5; }
+        [data-theme="dark"] { --bg:#1a2a3a; --card:#2a3a4a; --text:#e8f0f8; --text-light:#b0c8d8; --nav-bg:rgba(30,40,50,0.85); --border:#3a4a5a; --shadow:0 8px 24px rgba(0,0,0,0.4); }
+        ::-webkit-scrollbar { width:10px; }
+        ::-webkit-scrollbar-track { background:var(--bg); }
+        ::-webkit-scrollbar-thumb { background:var(--primary); border-radius:20px; }
+        a { text-decoration:none; color:var(--primary); }
+        button { cursor:pointer; border:none; background:var(--primary); color:white; padding:12px 28px; border-radius:40px; font-size:1.1rem; font-weight:600; display:inline-flex; align-items:center; gap:10px; transition:transform 0.15s,box-shadow 0.2s; box-shadow:0 4px 12px rgba(74,163,223,0.3); }
+        button:hover { transform:scale(1.03); box-shadow:0 6px 18px rgba(74,163,223,0.4); }
+        button:active { transform:scale(0.97); }
+        button.secondary { background:var(--yellow); color:#1a2a3a; box-shadow:0 4px 12px rgba(255,217,61,0.3); }
+        button.danger { background:var(--red); box-shadow:0 4px 12px rgba(255,107,107,0.3); }
+        button.green { background:var(--green); box-shadow:0 4px 12px rgba(107,203,119,0.3); }
+        .container { max-width:1100px; margin:0 auto; padding:20px 24px 40px; }
+        .card { background:var(--card); border-radius:var(--radius); padding:28px 32px; box-shadow:var(--shadow); border:1px solid var(--border); transition:background 0.3s,border 0.3s; }
+        .page { display:none; animation:fadeUp 0.35s ease; }
+        .page.active { display:block; }
+        @keyframes fadeUp { 0%{opacity:0;transform:translateY(20px);} 100%{opacity:1;transform:translateY(0);} }
 
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            transition: background 0.3s, color 0.3s;
-            min-height: 100vh;
-        }
+        /* Navigation */
+        nav { background:var(--nav-bg); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); padding:12px 24px; border-bottom:1px solid var(--border); display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; transition:background 0.3s,border 0.3s; }
+        nav .logo { font-size:1.8rem; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:8px; cursor:pointer; }
+        nav .logo i { font-size:2rem; color:var(--green); }
+        nav .nav-links { display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; }
+        nav .nav-links a { color:var(--text); font-weight:600; font-size:1rem; padding:6px 10px; border-radius:30px; transition:background 0.2s,color 0.2s; cursor:pointer; }
+        nav .nav-links a:hover { background:var(--primary); color:white; }
+        nav .nav-links a i { margin-right:6px; }
+        .theme-toggle { background:var(--card); border:1px solid var(--border); border-radius:40px; padding:8px 14px; font-size:1.2rem; color:var(--text); box-shadow:none; }
+        .theme-toggle:hover { transform:scale(1.05); }
 
-        /* ===== VARIABEL TEMA ===== */
-        :root {
-            --bg: #f0f9ff;          /* biru cair latar */
-            --card: #ffffff;
-            --text: #1a2a3a;
-            --text-light: #4a5a6a;
-            --primary: #4aa3df;     /* biru cair utama */
-            --red: #ff6b6b;
-            --yellow: #ffd93d;
-            --green: #6bcb77;
-            --shadow: 0 8px 24px rgba(0,0,0,0.08);
-            --radius: 28px;
-            --nav-bg: rgba(255,255,255,0.75);
-            --border: #d0e8f5;
-        }
+        /* Hero dan lain-lain (sama) */
+        .hero { display:flex; flex-wrap:wrap; align-items:center; gap:30px; padding:30px 0; }
+        .hero-text { flex:1 1 300px; }
+        .hero-text h1 { font-size:3rem; font-weight:900; line-height:1.2; }
+        .hero-text h1 span { color:var(--primary); }
+        .hero-text p { font-size:1.2rem; margin:20px 0; color:var(--text-light); }
+        .hero-image { flex:1 1 250px; text-align:center; font-size:8rem; color:var(--green); }
+        .form-group { margin-bottom:20px; }
+        .form-group label { display:block; font-weight:600; margin-bottom:6px; }
+        .form-group input, .form-group select { width:100%; padding:14px 18px; border-radius:30px; border:2px solid var(--border); background:var(--bg); color:var(--text); font-size:1rem; transition:border 0.2s; }
+        .form-group input:focus, .form-group select:focus { outline:none; border-color:var(--primary); }
+        .question-box { background:var(--bg); border-radius:var(--radius); padding:24px; margin:20px 0; border:2px dashed var(--primary); }
+        .question-box h3 { font-size:1.6rem; margin-bottom:20px; }
+        .options { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+        .options button { flex:1 0 120px; justify-content:center; background:var(--card); color:var(--text); border:2px solid var(--border); box-shadow:none; font-size:1.2rem; padding:16px; }
+        .options button:hover { background:var(--primary); color:white; border-color:var(--primary); }
+        .options button.correct { background:var(--green); border-color:var(--green); color:white; }
+        .options button.wrong { background:var(--red); border-color:var(--red); color:white; }
+        .timer { font-size:2rem; font-weight:700; color:var(--red); margin:10px 0; }
+        .progress-bar { background:var(--border); border-radius:40px; height:16px; width:100%; margin:6px 0 14px; overflow:hidden; }
+        .progress-bar .fill { height:100%; border-radius:40px; background:var(--primary); transition:width 0.3s; }
+        .stat-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(160px,1fr)); gap:16px; margin:20px 0; }
+        .stat-card { background:var(--bg); border-radius:var(--radius); padding:18px; text-align:center; }
+        .stat-card i { font-size:2.2rem; margin-bottom:6px; color:var(--primary); }
+        .stat-card .number { font-size:1.8rem; font-weight:800; }
+        .mascot { font-size:4rem; display:inline-block; animation:float 3s ease-in-out infinite; }
+        @keyframes float { 0%,100%{transform:translateY(0);} 50%{transform:translateY(-12px);} }
+        .confetti-container { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:999; overflow:hidden; }
+        .confetti { position:absolute; width:12px; height:12px; border-radius:2px; animation:fall linear forwards; }
+        @keyframes fall { 0%{transform:translateY(-20px) rotate(0deg); opacity:1;} 100%{transform:translateY(110vh) rotate(720deg); opacity:0;} }
 
-        [data-theme="dark"] {
-            --bg: #1a2a3a;
-            --card: #2a3a4a;
-            --text: #e8f0f8;
-            --text-light: #b0c8d8;
-            --nav-bg: rgba(30,40,50,0.85);
-            --border: #3a4a5a;
-            --shadow: 0 8px 24px rgba(0,0,0,0.4);
-        }
+        /* Modal Lupa Kata Laluan */
+        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:200; }
+        .modal.show { display:flex; }
+        .modal-content { background:var(--card); border-radius:var(--radius); padding:30px; max-width:400px; width:90%; box-shadow:var(--shadow); border:1px solid var(--border); }
+        .modal-content h2 { margin-bottom:16px; }
+        .modal-content .close { float:right; font-size:1.5rem; cursor:pointer; color:var(--text-light); }
+        .modal-content .close:hover { color:var(--red); }
 
-        /* ===== SCROLLBAR COMEL ===== */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 20px; }
-
-        /* ===== TYPOGRAPHY & UTILITIES ===== */
-        a { text-decoration: none; color: var(--primary); }
-        button {
-            cursor: pointer;
-            border: none;
-            background: var(--primary);
-            color: white;
-            padding: 12px 28px;
-            border-radius: 40px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.15s, box-shadow 0.2s;
-            box-shadow: 0 4px 12px rgba(74, 163, 223, 0.3);
-        }
-        button:hover { transform: scale(1.03); box-shadow: 0 6px 18px rgba(74, 163, 223, 0.4); }
-        button:active { transform: scale(0.97); }
-        button.secondary {
-            background: var(--yellow);
-            color: #1a2a3a;
-            box-shadow: 0 4px 12px rgba(255, 217, 61, 0.3);
-        }
-        button.danger { background: var(--red); box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3); }
-        button.green { background: var(--green); box-shadow: 0 4px 12px rgba(107, 203, 119, 0.3); }
-
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 20px 24px 40px;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: var(--radius);
-            padding: 28px 32px;
-            box-shadow: var(--shadow);
-            border: 1px solid var(--border);
-            transition: background 0.3s, border 0.3s;
-        }
-
-        .page {
-            display: none;
-            animation: fadeUp 0.35s ease;
-        }
-        .page.active { display: block; }
-
-        @keyframes fadeUp {
-            0% { opacity: 0; transform: translateY(20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== NAVIGATION ===== */
-        nav {
-            background: var(--nav-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            padding: 12px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            transition: background 0.3s, border 0.3s;
-        }
-        nav .logo {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        nav .logo i { font-size: 2rem; color: var(--green); }
-        nav .nav-links {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px 18px;
-        }
-        nav .nav-links a {
-            color: var(--text);
-            font-weight: 600;
-            font-size: 1rem;
-            padding: 6px 10px;
-            border-radius: 30px;
-            transition: background 0.2s, color 0.2s;
-        }
-        nav .nav-links a:hover {
-            background: var(--primary);
-            color: white;
-        }
-        nav .nav-links a i { margin-right: 6px; }
-        .theme-toggle {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 40px;
-            padding: 8px 14px;
-            font-size: 1.2rem;
-            color: var(--text);
-            box-shadow: none;
-        }
-        .theme-toggle:hover { transform: scale(1.05); }
-
-        /* ===== HERO LANDING ===== */
-        .hero {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 30px;
-            padding: 30px 0;
-        }
-        .hero-text { flex: 1 1 300px; }
-        .hero-text h1 {
-            font-size: 3rem;
-            font-weight: 900;
-            line-height: 1.2;
-        }
-        .hero-text h1 span { color: var(--primary); }
-        .hero-text p {
-            font-size: 1.2rem;
-            margin: 20px 0;
-            color: var(--text-light);
-        }
-        .hero-image {
-            flex: 1 1 250px;
-            text-align: center;
-            font-size: 8rem;
-            color: var(--green);
-        }
-
-        /* ===== FORM ===== */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        .form-group input, .form-group select {
-            width: 100%;
-            padding: 14px 18px;
-            border-radius: 30px;
-            border: 2px solid var(--border);
-            background: var(--bg);
-            color: var(--text);
-            font-size: 1rem;
-            transition: border 0.2s;
-        }
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-
-        /* ===== QUESTION CARD ===== */
-        .question-box {
-            background: var(--bg);
-            border-radius: var(--radius);
-            padding: 24px;
-            margin: 20px 0;
-            border: 2px dashed var(--primary);
-        }
-        .question-box h3 {
-            font-size: 1.6rem;
-            margin-bottom: 20px;
-        }
-        .options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            justify-content: center;
-        }
-        .options button {
-            flex: 1 0 120px;
-            justify-content: center;
-            background: var(--card);
-            color: var(--text);
-            border: 2px solid var(--border);
-            box-shadow: none;
-            font-size: 1.2rem;
-            padding: 16px;
-        }
-        .options button:hover {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        .options button.correct { background: var(--green); border-color: var(--green); color: white; }
-        .options button.wrong { background: var(--red); border-color: var(--red); color: white; }
-
-        .timer {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--red);
-            margin: 10px 0;
-        }
-
-        /* ===== PROGRESS BARS ===== */
-        .progress-bar {
-            background: var(--border);
-            border-radius: 40px;
-            height: 16px;
-            width: 100%;
-            margin: 6px 0 14px;
-            overflow: hidden;
-        }
-        .progress-bar .fill {
-            height: 100%;
-            border-radius: 40px;
-            background: var(--primary);
-            transition: width 0.3s;
-        }
-
-        .stat-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-            gap: 16px;
-            margin: 20px 0;
-        }
-        .stat-card {
-            background: var(--bg);
-            border-radius: var(--radius);
-            padding: 18px;
-            text-align: center;
-        }
-        .stat-card i { font-size: 2.2rem; margin-bottom: 6px; color: var(--primary); }
-        .stat-card .number { font-size: 1.8rem; font-weight: 800; }
-
-        /* ===== MASCOT ===== */
-        .mascot {
-            font-size: 4rem;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-12px); }
-        }
-
-        /* ===== CONFETTI (ringan) ===== */
-        .confetti-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 999;
-            overflow: hidden;
-        }
-        .confetti {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
-            animation: fall linear forwards;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 680px) {
-            nav .nav-links a span { display: none; }
-            nav .nav-links a i { margin-right: 0; font-size: 1.4rem; }
-            .hero-text h1 { font-size: 2.2rem; }
-            .card { padding: 20px; }
-            .options button { flex: 1 0 80px; font-size: 1rem; padding: 12px; }
+        @media (max-width:680px) {
+            nav .nav-links a span { display:none; }
+            nav .nav-links a i { margin-right:0; font-size:1.4rem; }
+            .hero-text h1 { font-size:2.2rem; }
+            .card { padding:20px; }
+            .options button { flex:1 0 80px; font-size:1rem; padding:12px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ============================================================ -->
-    <!-- NAVIGASI -->
-    <!-- ============================================================ -->
+    <!-- ===== NAVIGASI ===== -->
     <nav>
-        <div class="logo">
-            <i class="fas fa-tree"></i> Saya Mahir
-        </div>
+        <div class="logo" id="logoLink"><i class="fas fa-tree"></i> Saya Mahir</div>
         <div class="nav-links">
-            <a href="#" data-page="landing"><i class="fas fa-home"></i><span> Utama</span></a>
+            <a id="navHome"><i class="fas fa-home"></i><span> Utama</span></a>
             <a href="#" data-page="about"><i class="fas fa-info-circle"></i><span> Tentang</span></a>
-            <!-- link dinamik untuk sign in/out dan profile -->
             <span id="authLinks">
                 <a href="#" data-page="signin"><i class="fas fa-sign-in-alt"></i><span> Masuk</span></a>
                 <a href="#" data-page="signup"><i class="fas fa-user-plus"></i><span> Daftar</span></a>
@@ -353,12 +104,25 @@
         </div>
     </nav>
 
-    <!-- ============================================================ -->
-    <!-- KANDUNGAN HALAMAN -->
-    <!-- ============================================================ -->
+    <!-- ===== MODAL LUPA KATA LALUAN ===== -->
+    <div id="forgotModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeForgotModal">&times;</span>
+            <h2><i class="fas fa-key"></i> Lupa Kata Laluan</h2>
+            <p>Masukkan nama pengguna anda. Kami akan tunjukkan kata laluan anda (untuk prototaip).</p>
+            <div class="form-group">
+                <label>Nama Pengguna</label>
+                <input type="text" id="forgotUsername" placeholder="Ali" />
+            </div>
+            <button id="forgotBtn"><i class="fas fa-search"></i> Cari</button>
+            <div id="forgotResult" style="margin-top:12px;"></div>
+        </div>
+    </div>
+
+    <!-- ===== KANDUNGAN HALAMAN ===== -->
     <div class="container">
 
-        <!-- ===== LANDING ===== -->
+        <!-- LANDING -->
         <div id="landing" class="page active">
             <div class="hero">
                 <div class="hero-text">
@@ -373,32 +137,20 @@
                 </div>
             </div>
             <div style="display:flex; flex-wrap:wrap; gap:20px; margin-top:20px;">
-                <div class="card" style="flex:1;">
-                    <i class="fas fa-book-open" style="color:var(--red); font-size:2.5rem;"></i>
-                    <h3>Membaca</h3>
-                    <p>Dari kenal huruf hingga baca cerita dan fahami nilai moral.</p>
-                </div>
-                <div class="card" style="flex:1;">
-                    <i class="fas fa-pencil-alt" style="color:var(--yellow); font-size:2.5rem;"></i>
-                    <h3>Menulis</h3>
-                    <p>Salin huruf, bina ayat, dan hasilkan karangan kreatif.</p>
-                </div>
-                <div class="card" style="flex:1;">
-                    <i class="fas fa-calculator" style="color:var(--green); font-size:2.5rem;"></i>
-                    <h3>Mengira</h3>
-                    <p>Nombor, tambah, tolak, darab, bahagi, dan KBAT.</p>
-                </div>
+                <div class="card" style="flex:1;"><i class="fas fa-book-open" style="color:var(--red); font-size:2.5rem;"></i><h3>Membaca</h3><p>Dari kenal huruf hingga baca cerita dan fahami nilai moral.</p></div>
+                <div class="card" style="flex:1;"><i class="fas fa-pencil-alt" style="color:var(--yellow); font-size:2.5rem;"></i><h3>Menulis</h3><p>Salin huruf, bina ayat, dan hasilkan karangan kreatif.</p></div>
+                <div class="card" style="flex:1;"><i class="fas fa-calculator" style="color:var(--green); font-size:2.5rem;"></i><h3>Mengira</h3><p>Nombor, tambah, tolak, darab, bahagi, dan KBAT.</p></div>
             </div>
         </div>
 
-        <!-- ===== SIGN UP ===== -->
+        <!-- SIGN UP -->
         <div id="signup" class="page">
             <div class="card" style="max-width:480px; margin:20px auto;">
                 <h2><i class="fas fa-user-plus" style="color:var(--primary);"></i> Daftar Akaun</h2>
                 <form id="signupForm">
                     <div class="form-group">
-                        <label>Nama Pengguna</label>
-                        <input type="text" id="signupUsername" placeholder="contoh: ali" required />
+                        <label>Nama Pengguna (tanpa ruang, min 3 huruf)</label>
+                        <input type="text" id="signupUsername" placeholder="contoh: ali" required pattern="\S{3,}" title="Tiada ruang, minimum 3 aksara" />
                     </div>
                     <div class="form-group">
                         <label>Kata Laluan</label>
@@ -411,7 +163,7 @@
             </div>
         </div>
 
-        <!-- ===== SIGN IN ===== -->
+        <!-- SIGN IN -->
         <div id="signin" class="page">
             <div class="card" style="max-width:480px; margin:20px auto;">
                 <h2><i class="fas fa-sign-in-alt" style="color:var(--primary);"></i> Log Masuk</h2>
@@ -425,13 +177,14 @@
                         <input type="password" id="signinPassword" required />
                     </div>
                     <button type="submit"><i class="fas fa-arrow-right"></i> Masuk</button>
-                    <p style="margin-top:12px;">Baru? <a href="#" onclick="navigate('signup')">Daftar sekarang</a></p>
+                    <p style="margin-top:8px;"><a href="#" id="forgotPasswordLink">Lupa kata laluan?</a></p>
+                    <p style="margin-top:8px;">Baru? <a href="#" onclick="navigate('signup')">Daftar sekarang</a></p>
                 </form>
                 <div id="signinMsg" style="margin-top:12px;"></div>
             </div>
         </div>
 
-        <!-- ===== PROFILE / DASHBOARD ===== -->
+        <!-- PROFILE / DASHBOARD -->
         <div id="profile" class="page">
             <div class="card">
                 <div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap;">
@@ -457,7 +210,7 @@
             </div>
         </div>
 
-        <!-- ===== PLACEMENT TEST ===== -->
+        <!-- PLACEMENT TEST -->
         <div id="placement" class="page">
             <div class="card">
                 <h2><i class="fas fa-clipboard-list" style="color:var(--primary);"></i> Ujian Penempatan</h2>
@@ -479,7 +232,7 @@
             </div>
         </div>
 
-        <!-- ===== CHOOSE SKILL ===== -->
+        <!-- CHOOSE SKILL -->
         <div id="choose" class="page">
             <div class="card">
                 <h2><i class="fas fa-fist-raised" style="color:var(--yellow);"></i> Pilih Kemahiran</h2>
@@ -493,7 +246,7 @@
             </div>
         </div>
 
-        <!-- ===== PRACTICE ===== -->
+        <!-- PRACTICE -->
         <div id="practice" class="page">
             <div class="card">
                 <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
@@ -514,17 +267,15 @@
             </div>
         </div>
 
-        <!-- ===== PROGRESS ===== -->
+        <!-- PROGRESS -->
         <div id="progress" class="page">
             <div class="card">
                 <h2><i class="fas fa-chart-line" style="color:var(--primary);"></i> Kemajuan Saya</h2>
-                <div id="progressContent">
-                    <p>Tiada data. Sila lengkapkan ujian atau latihan.</p>
-                </div>
+                <div id="progressContent"><p>Tiada data. Sila lengkapkan ujian atau latihan.</p></div>
             </div>
         </div>
 
-        <!-- ===== ABOUT (STATIK) ===== -->
+        <!-- ABOUT (STATIK) -->
         <div id="about" class="page">
             <div class="card">
                 <h2><i class="fas fa-info-circle" style="color:var(--primary);"></i> Tentang Saya Mahir</h2>
@@ -537,32 +288,27 @@
 
     </div><!-- end container -->
 
-    <!-- ===== CONFETTI CONTAINER ===== -->
+    <!-- ===== CONFETTI ===== -->
     <div id="confettiContainer" class="confetti-container"></div>
 
     <!-- ============================================================ -->
-    <!-- JAVASCRIPT UTAMA -->
+    <!-- JAVASCRIPT -->
     <!-- ============================================================ -->
     <script>
         // ============================================================
         // 1. STATE & DATA
         // ============================================================
         const APP_KEY = 'sayaMahirData';
-        let currentUser = null;          // username
-        let practiceState = null;        // { skill, questions, currentIndex, correctCount, timer, timerInterval, answered }
-        let placementState = null;       // { questions, currentIndex, answers, skillScores }
+        let currentUser = null;
+        let practiceState = null;
+        let placementState = null;
 
-        // ============================================================
-        // 2. UTILITI
-        // ============================================================
         function getUsers() {
             const raw = localStorage.getItem(APP_KEY);
             if (!raw) return {};
             try { return JSON.parse(raw); } catch { return {}; }
         }
-        function saveUsers(users) {
-            localStorage.setItem(APP_KEY, JSON.stringify(users));
-        }
+        function saveUsers(users) { localStorage.setItem(APP_KEY, JSON.stringify(users)); }
         function getUser(username) {
             const users = getUsers();
             return users[username] || null;
@@ -572,28 +318,32 @@
             users[username] = data;
             saveUsers(users);
         }
-        function getLoggedIn() {
-            return localStorage.getItem('sayaMahirSession') || null;
-        }
-        function setLoggedIn(username) {
-            localStorage.setItem('sayaMahirSession', username);
-        }
-        function clearLoggedIn() {
-            localStorage.removeItem('sayaMahirSession');
-        }
+        function getLoggedIn() { return localStorage.getItem('sayaMahirSession') || null; }
+        function setLoggedIn(username) { localStorage.setItem('sayaMahirSession', username); }
+        function clearLoggedIn() { localStorage.removeItem('sayaMahirSession'); }
 
         // ============================================================
-        // 3. NAVIGASI & TEMA
+        // 2. NAVIGASI & TEMA
         // ============================================================
         function navigate(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const target = document.getElementById(pageId);
             if (target) target.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'smooth' });
-            // Update nav highlight (optional)
         }
 
-        // Tema
+        // Navigasi utama (logo dan pautan "Utama")
+        function goHome() {
+            const session = getLoggedIn();
+            if (session) {
+                currentUser = session;
+                navigate('profile');
+                loadProfile();
+            } else {
+                navigate('landing');
+            }
+        }
+
         const themeToggle = document.getElementById('themeToggle');
         const currentTheme = localStorage.getItem('sayaMahirTheme') || 'light';
         document.documentElement.setAttribute('data-theme', currentTheme);
@@ -606,8 +356,15 @@
             themeToggle.innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
         });
 
+        // Logo dan nav home
+        document.getElementById('logoLink').addEventListener('click', goHome);
+        document.getElementById('navHome').addEventListener('click', function(e) {
+            e.preventDefault();
+            goHome();
+        });
+
         // ============================================================
-        // 4. AUTENTIKASI
+        // 3. AUTENTIKASI
         // ============================================================
         function updateNav() {
             const session = getLoggedIn();
@@ -633,13 +390,23 @@
             const username = document.getElementById('signupUsername').value.trim();
             const password = document.getElementById('signupPassword').value.trim();
             const msg = document.getElementById('signupMsg');
-            if (!username || !password) { msg.innerHTML = '<span style="color:var(--red);">Sila isi semua.</span>'; return; }
+            // Validasi: tiada ruang, min 3 aksara
+            if (!/^\S{3,}$/.test(username)) {
+                msg.innerHTML = '<span style="color:var(--red);">Nama pengguna mestilah tanpa ruang dan minimum 3 aksara.</span>';
+                return;
+            }
+            if (!password || password.length < 4) {
+                msg.innerHTML = '<span style="color:var(--red);">Kata laluan minimum 4 aksara.</span>';
+                return;
+            }
             const users = getUsers();
-            if (users[username]) { msg.innerHTML = '<span style="color:var(--red);">Nama pengguna sudah wujud.</span>'; return; }
-            // Data awal
+            if (users[username]) {
+                msg.innerHTML = '<span style="color:var(--red);">Nama pengguna sudah wujud.</span>';
+                return;
+            }
             users[username] = {
                 password: password,
-                tahapKeseluruhan: 1, // 1=Lemah, 2=Sederhana, 3=Cemerlang
+                tahapKeseluruhan: 1,
                 tahapMembaca: 1,
                 tahapMenulis: 1,
                 tahapMengira: 1,
@@ -688,6 +455,36 @@
         }
 
         // ============================================================
+        // 4. LUPA KATA LALUAN (MODAL)
+        // ============================================================
+        const forgotModal = document.getElementById('forgotModal');
+        const closeForgot = document.getElementById('closeForgotModal');
+        const forgotLink = document.getElementById('forgotPasswordLink');
+        const forgotBtn = document.getElementById('forgotBtn');
+        const forgotResult = document.getElementById('forgotResult');
+
+        forgotLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            forgotModal.classList.add('show');
+            document.getElementById('forgotUsername').value = '';
+            forgotResult.innerHTML = '';
+        });
+        closeForgot.addEventListener('click', () => forgotModal.classList.remove('show'));
+        forgotModal.addEventListener('click', function(e) {
+            if (e.target === this) forgotModal.classList.remove('show');
+        });
+
+        forgotBtn.addEventListener('click', function() {
+            const username = document.getElementById('forgotUsername').value.trim();
+            const users = getUsers();
+            if (!username || !users[username]) {
+                forgotResult.innerHTML = '<span style="color:var(--red);">Nama pengguna tidak dijumpai.</span>';
+                return;
+            }
+            forgotResult.innerHTML = `<span style="color:var(--green);">Kata laluan untuk <strong>${username}</strong> ialah: <strong>${users[username].password}</strong></span>`;
+        });
+
+        // ============================================================
         // 5. PROFIL
         // ============================================================
         function loadProfile() {
@@ -699,7 +496,6 @@
             document.getElementById('profileReadLevel').textContent = getLevelName(user.tahapMembaca);
             document.getElementById('profileWriteLevel').textContent = getLevelName(user.tahapMenulis);
             document.getElementById('profileMathLevel').textContent = getLevelName(user.tahapMengira);
-            // Jika placement belum selesai, galakkan
             if (!user.placementDone) {
                 document.getElementById('profileMsg').innerHTML = '<span style="color:var(--red);"><i class="fas fa-exclamation-circle"></i> Anda perlu mengambil Ujian Penempatan dahulu.</span>';
             } else {
@@ -715,34 +511,27 @@
         }
 
         // ============================================================
-        // 6. PLACEMENT TEST (15 soalan tetap)
+        // 6. PLACEMENT TEST (sama seperti sebelumnya)
         // ============================================================
         function generatePlacementQuestions() {
-            // 5 membaca, 5 menulis, 5 mengira – dari mudah ke sukar
             const qs = [];
-            // Membaca (tahap 1->3)
-            qs.push({ skill: 'read', q: 'Huruf apakah ini? "A"', options: ['A', 'B', 'C', 'D'], answer: 0 });
-            qs.push({ skill: 'read', q: 'Huruf apakah ini? "M"', options: ['N', 'M', 'L', 'K'], answer: 1 });
-            qs.push({ skill: 'read', q: 'Suku kata "ba" + "ca" = ?', options: ['baca', 'caba', 'baka', 'caca'], answer: 0 });
-            qs.push({ skill: 'read', q: 'Perkataan "ibu" merujuk kepada?', options: ['Ayah', 'Ibu', 'Kakak', 'Adik'], answer: 1 });
-            qs.push({ skill: 'read', q: 'Apakah nilai moral dalam cerita "Kancil dan Buaya"?', options: ['Bijak', 'Degil', 'Malas', 'Bodoh'], answer: 0 });
-            // Menulis (tahap 1->3)
-            qs.push({ skill: 'write', q: 'Salin huruf "b" (pilih yang betul)', options: ['b', 'd', 'p', 'q'], answer: 0 });
-            qs.push({ skill: 'write', q: 'Salin perkataan "rumah"', options: ['rumah', 'rumahh', 'ruma', 'rumah'], answer: 0, isText: true, correctText: 'rumah' });
-            qs.push({ skill: 'write', q: 'Bina ayat mudah: "Saya ____ sekolah."', options: ['pergi', 'pergi ke', 'pergi ke', 'pergi'], answer: 1, isText: true, correctText: 'pergi ke' });
-            qs.push({ skill: 'write', q: 'Pilih ayat yang betul.', options: ['Saya makan nasi.', 'Saya makan nasi.', 'Saya makan nasi.', 'Saya makan nasi.'], answer: 0 });
-            qs.push({ skill: 'write', q: 'Tulis karangan pendek tentang "Keluarga Saya" (pilih idea terbaik).', options: ['Saya ada ayah ibu.', 'Saya suka main.', 'Saya pergi sekolah.', 'Saya makan.'], answer: 0 });
-            // Mengira (tahap 1->3)
-            qs.push({ skill: 'math', q: 'Berapa banyak? 🍎🍎🍎', options: ['2', '3', '4', '5'], answer: 1 });
-            qs.push({ skill: 'math', q: 'Nombor 7 datang selepas?', options: ['5', '6', '7', '8'], answer: 1 });
-            qs.push({ skill: 'math', q: '3 + 2 = ?', options: ['4', '5', '6', '7'], answer: 1 });
-            qs.push({ skill: 'math', q: '10 - 4 = ?', options: ['5', '6', '7', '8'], answer: 1 });
-            qs.push({ skill: 'math', q: 'Ali ada 5 guli, beri 2 kepada adik. Berapa baki?', options: ['2', '3', '4', '5'], answer: 1 });
+            qs.push({ skill: 'read', q: 'Huruf apakah ini? "A"', options: ['A','B','C','D'], answer:0 });
+            qs.push({ skill: 'read', q: 'Huruf apakah ini? "M"', options: ['N','M','L','K'], answer:1 });
+            qs.push({ skill: 'read', q: 'Suku kata "ba" + "ca" = ?', options: ['baca','caba','baka','caca'], answer:0 });
+            qs.push({ skill: 'read', q: 'Perkataan "ibu" merujuk kepada?', options: ['Ayah','Ibu','Kakak','Adik'], answer:1 });
+            qs.push({ skill: 'read', q: 'Apakah nilai moral dalam cerita "Kancil dan Buaya"?', options: ['Bijak','Degil','Malas','Bodoh'], answer:0 });
+            qs.push({ skill: 'write', q: 'Salin huruf "b" (pilih yang betul)', options: ['b','d','p','q'], answer:0 });
+            qs.push({ skill: 'write', q: 'Salin perkataan "rumah"', options: ['rumah','rumahh','ruma','rumah'], answer:0, isText:true, correctText:'rumah' });
+            qs.push({ skill: 'write', q: 'Bina ayat mudah: "Saya ____ sekolah."', options: ['pergi','pergi ke','pergi ke','pergi'], answer:1, isText:true, correctText:'pergi ke' });
+            qs.push({ skill: 'write', q: 'Pilih ayat yang betul.', options: ['Saya makan nasi.','Saya makan nasi.','Saya makan nasi.','Saya makan nasi.'], answer:0 });
+            qs.push({ skill: 'write', q: 'Tulis karangan pendek tentang "Keluarga Saya" (pilih idea terbaik).', options: ['Saya ada ayah ibu.','Saya suka main.','Saya pergi sekolah.','Saya makan.'], answer:0 });
+            qs.push({ skill: 'math', q: 'Berapa banyak? 🍎🍎🍎', options: ['2','3','4','5'], answer:1 });
+            qs.push({ skill: 'math', q: 'Nombor 7 datang selepas?', options: ['5','6','7','8'], answer:1 });
+            qs.push({ skill: 'math', q: '3 + 2 = ?', options: ['4','5','6','7'], answer:1 });
+            qs.push({ skill: 'math', q: '10 - 4 = ?', options: ['5','6','7','8'], answer:1 });
+            qs.push({ skill: 'math', q: 'Ali ada 5 guli, beri 2 kepada adik. Berapa baki?', options: ['2','3','4','5'], answer:1 });
             return qs;
         }
-
-        let placementIndex = 0;
-        let placementAnswers = [];
 
         function startPlacement() {
             if (!currentUser) { navigate('signin'); return; }
@@ -754,9 +543,7 @@
                 return;
             }
             const questions = generatePlacementQuestions();
-            placementState = { questions, currentIndex: 0, answers: [], skillScores: { read: 0, write: 0, math: 0 } };
-            placementIndex = 0;
-            placementAnswers = [];
+            placementState = { questions, currentIndex:0, answers:[], skillScores:{ read:0, write:0, math:0 } };
             document.getElementById('placementResult').style.display = 'none';
             document.getElementById('placementContainer').style.display = 'block';
             showPlacementQuestion();
@@ -765,17 +552,13 @@
         function showPlacementQuestion() {
             const state = placementState;
             if (!state) return;
-            if (state.currentIndex >= state.questions.length) {
-                finishPlacement();
-                return;
-            }
+            if (state.currentIndex >= state.questions.length) { finishPlacement(); return; }
             const q = state.questions[state.currentIndex];
             const box = document.getElementById('placementQuestion');
             const optDiv = document.getElementById('placementOptions');
             const prog = document.getElementById('placementProgress');
             box.innerHTML = `<h3>Soalan ${state.currentIndex+1}/15</h3><p>${q.q}</p>`;
             optDiv.innerHTML = '';
-            // Jika soalan teks (menulis)
             if (q.isText) {
                 optDiv.innerHTML = `<div style="width:100%;"><input type="text" id="placementTextInput" placeholder="Taip jawapan..." style="padding:14px 20px; border-radius:40px; border:2px solid var(--border); width:100%; max-width:300px; background:var(--bg); color:var(--text); font-size:1.2rem;" /><button onclick="submitPlacementText()" style="margin-top:10px;"><i class="fas fa-check"></i> Hantar</button></div>`;
             } else {
@@ -825,7 +608,6 @@
             const state = placementState;
             const totalCorrect = state.answers.filter(a => a.correct).length;
             const overallLevel = totalCorrect <= 5 ? 1 : (totalCorrect <= 10 ? 2 : 3);
-            // Tentukan tahap setiap kemahiran berdasarkan markah (0-2 => 1, 3-4 => 2, 5 => 3)
             function getLevelFromScore(score) {
                 if (score <= 2) return 1;
                 if (score <= 4) return 2;
@@ -834,8 +616,6 @@
             const readLevel = getLevelFromScore(state.skillScores.read);
             const writeLevel = getLevelFromScore(state.skillScores.write);
             const mathLevel = getLevelFromScore(state.skillScores.math);
-
-            // Simpan ke profil
             const user = getUser(currentUser);
             user.tahapKeseluruhan = overallLevel;
             user.tahapMembaca = readLevel;
@@ -843,8 +623,6 @@
             user.tahapMengira = mathLevel;
             user.placementDone = true;
             updateUser(currentUser, user);
-
-            // Papar keputusan
             document.getElementById('placementContainer').style.display = 'none';
             document.getElementById('placementResult').style.display = 'block';
             document.getElementById('placementScore').textContent = totalCorrect;
@@ -856,7 +634,6 @@
         }
 
         function showPlacementResult(user) {
-            // Jika sudah selesai, paparkan keputusan simpanan
             document.getElementById('placementContainer').style.display = 'none';
             document.getElementById('placementResult').style.display = 'block';
             document.getElementById('placementScore').textContent = 'Selesai';
@@ -867,7 +644,7 @@
         }
 
         // ============================================================
-        // 7. PRACTICE (Latihan)
+        // 7. PRACTICE (sama seperti sebelumnya)
         // ============================================================
         function startPractice(skill) {
             if (!currentUser) { navigate('signin'); return; }
@@ -876,22 +653,14 @@
                 document.getElementById('chooseMsg').innerHTML = '<span style="color:var(--red);">Sila ambil Ujian Penempatan dahulu.</span>';
                 return;
             }
-            // Dapatkan tahap untuk skill
             let level;
             if (skill === 'read') level = user.tahapMembaca;
             else if (skill === 'write') level = user.tahapMenulis;
             else if (skill === 'math') level = user.tahapMengira;
-            // Jana 5 soalan berdasarkan tahap dan skill
             const questions = generatePracticeQuestions(skill, level, 5);
             practiceState = {
-                skill: skill,
-                questions: questions,
-                currentIndex: 0,
-                correctCount: 0,
-                answered: false,
-                timer: 10,
-                timerInterval: null,
-                allCorrect: true
+                skill, questions, currentIndex:0, correctCount:0, answered:false,
+                timer:10, timerInterval:null, allCorrect:true
             };
             navigate('practice');
             document.getElementById('practiceSkillName').textContent = 
@@ -900,86 +669,61 @@
         }
 
         function generatePracticeQuestions(skill, level, count) {
-            // Mock AI: hasilkan soalan berdasarkan tahap dan kemahiran
-            const qs = [];
             const templates = {
                 read: {
-                    1: [
-                        { q: 'Huruf "B" disebut?', options: ['Be', 'De', 'Pe', 'Te'], answer: 0 },
-                        { q: 'Huruf "M" disebut?', options: ['Em', 'Am', 'Om', 'Um'], answer: 0 },
-                        { q: 'Suku kata "ca" + "ri" = ?', options: ['cari', 'cara', 'ciri', 'ceri'], answer: 0 },
-                        { q: 'Padankan: "Ibu" dengan gambar?', options: ['Ibu', 'Ayah', 'Kakak', 'Adik'], answer: 0 },
-                        { q: 'Perkataan "buku" bermaksud?', options: ['Buku', 'Pensil', 'Kertas', 'Pen'], answer: 0 }
-                    ],
-                    2: [
-                        { q: 'Frasa "Saya suka makan" maksud?', options: ['Saya suka makan', 'Saya suka minum', 'Saya suka tidur', 'Saya suka main'], answer: 0 },
-                        { q: 'Ayat "Ibu pergi ke pasar" – siapa pergi?', options: ['Ibu', 'Ayah', 'Adik', 'Kakak'], answer: 0 },
-                        { q: 'Baca: "Kucing itu comel." Apakah maksud?', options: ['Kucing itu comel', 'Kucing itu garang', 'Kucing itu lapar', 'Kucing itu sakit'], answer: 0 },
-                        { q: 'Apakah lawan bagi "besar"?', options: ['kecil', 'besar', 'panjang', 'pendek'], answer: 0 },
-                        { q: 'Cerita: "Ali menolong ibu." Nilai moral?', options: ['Tolong-menolong', 'Malas', 'Degil', 'Bodoh'], answer: 0 }
-                    ],
-                    3: [
-                        { q: 'Baca teks: "Hari ini cuaca cerah. Kami pergi ke pantai." – cuaca?', options: ['Cerah', 'Hujan', 'Berawan', 'Sejuk'], answer: 0 },
-                        { q: 'Apakah pengajaran cerita "Kancil dan Buaya"?', options: ['Bijak', 'Degil', 'Malas', 'Bodoh'], answer: 0 },
-                        { q: 'Fahami: "Adik menangis kerana jatuh." – kenapa adik menangis?', options: ['Jatuh', 'Lapar', 'Mengantuk', 'Gembira'], answer: 0 },
-                        { q: 'Nilai moral: "Berkongsi itu baik." Contoh?', options: ['Berkongsi makanan', 'Rebut makanan', 'Simpan sendiri', 'Buang makanan'], answer: 0 },
-                        { q: 'Cerita: "Pak Cik menanam pokok." – aktiviti?', options: ['Menanam', 'Menuai', 'Memotong', 'Membakar'], answer: 0 }
-                    ]
+                    1: [{ q:'Huruf "B" disebut?', options:['Be','De','Pe','Te'], answer:0 },
+                        { q:'Huruf "M" disebut?', options:['Em','Am','Om','Um'], answer:0 },
+                        { q:'Suku kata "ca" + "ri" = ?', options:['cari','cara','ciri','ceri'], answer:0 },
+                        { q:'Padankan: "Ibu" dengan gambar?', options:['Ibu','Ayah','Kakak','Adik'], answer:0 },
+                        { q:'Perkataan "buku" bermaksud?', options:['Buku','Pensil','Kertas','Pen'], answer:0 }],
+                    2: [{ q:'Frasa "Saya suka makan" maksud?', options:['Saya suka makan','Saya suka minum','Saya suka tidur','Saya suka main'], answer:0 },
+                        { q:'Ayat "Ibu pergi ke pasar" – siapa pergi?', options:['Ibu','Ayah','Adik','Kakak'], answer:0 },
+                        { q:'Baca: "Kucing itu comel." Apakah maksud?', options:['Kucing itu comel','Kucing itu garang','Kucing itu lapar','Kucing itu sakit'], answer:0 },
+                        { q:'Apakah lawan bagi "besar"?', options:['kecil','besar','panjang','pendek'], answer:0 },
+                        { q:'Cerita: "Ali menolong ibu." Nilai moral?', options:['Tolong-menolong','Malas','Degil','Bodoh'], answer:0 }],
+                    3: [{ q:'Baca teks: "Hari ini cuaca cerah. Kami pergi ke pantai." – cuaca?', options:['Cerah','Hujan','Berawan','Sejuk'], answer:0 },
+                        { q:'Apakah pengajaran cerita "Kancil dan Buaya"?', options:['Bijak','Degil','Malas','Bodoh'], answer:0 },
+                        { q:'Fahami: "Adik menangis kerana jatuh." – kenapa adik menangis?', options:['Jatuh','Lapar','Mengantuk','Gembira'], answer:0 },
+                        { q:'Nilai moral: "Berkongsi itu baik." Contoh?', options:['Berkongsi makanan','Rebut makanan','Simpan sendiri','Buang makanan'], answer:0 },
+                        { q:'Cerita: "Pak Cik menanam pokok." – aktiviti?', options:['Menanam','Menuai','Memotong','Membakar'], answer:0 }]
                 },
                 write: {
-                    1: [
-                        { q: 'Salin huruf "d"', options: ['d', 'b', 'p', 'q'], answer: 0, isText: true, correctText: 'd' },
-                        { q: 'Salin perkataan "mama"', options: ['mama', 'mama', 'mama', 'mama'], answer: 0, isText: true, correctText: 'mama' },
-                        { q: 'Salin "rumah"', options: ['rumah', 'rumah', 'rumah', 'rumah'], answer: 0, isText: true, correctText: 'rumah' },
-                        { q: 'Salin "bapa"', options: ['bapa', 'bapa', 'bapa', 'bapa'], answer: 0, isText: true, correctText: 'bapa' },
-                        { q: 'Salin "kakak"', options: ['kakak', 'kakak', 'kakak', 'kakak'], answer: 0, isText: true, correctText: 'kakak' }
-                    ],
-                    2: [
-                        { q: 'Salin ayat: "Saya suka."', options: ['Saya suka.', 'Saya suka.', 'Saya suka.', 'Saya suka.'], answer: 0, isText: true, correctText: 'saya suka' },
-                        { q: 'Salin: "Ibu masak."', options: ['Ibu masak.', 'Ibu masak.', 'Ibu masak.', 'Ibu masak.'], answer: 0, isText: true, correctText: 'ibu masak' },
-                        { q: 'Salin: "Kucing berlari."', options: ['Kucing berlari.', 'Kucing berlari.', 'Kucing berlari.', 'Kucing berlari.'], answer: 0, isText: true, correctText: 'kucing berlari' },
-                        { q: 'Salin: "Adik menangis."', options: ['Adik menangis.', 'Adik menangis.', 'Adik menangis.', 'Adik menangis.'], answer: 0, isText: true, correctText: 'adik menangis' },
-                        { q: 'Salin: "Bapa membaca."', options: ['Bapa membaca.', 'Bapa membaca.', 'Bapa membaca.', 'Bapa membaca.'], answer: 0, isText: true, correctText: 'bapa membaca' }
-                    ],
-                    3: [
-                        { q: 'Tulis karangan pendek tentang "Keluarga" (pilih yang terbaik).', options: ['Saya ada ayah dan ibu. Saya sayang mereka.', 'Saya suka main.', 'Saya pergi sekolah.', 'Saya makan.'], answer: 0 },
-                        { q: 'Bina ayat: "____ pergi ke sekolah." (pilih subjek yang betul)', options: ['Saya', 'Kamu', 'Dia', 'Kita'], answer: 0 },
-                        { q: 'Lengkapkan: "Adik ____ nasi."', options: ['makan', 'minum', 'tidur', 'main'], answer: 0 },
-                        { q: 'Pilih ayat yang gramatis.', options: ['Saya sedang belajar.', 'Saya belajar sedang.', 'Belajar saya sedang.', 'Sedang saya belajar.'], answer: 0 },
-                        { q: 'Tulis ayat tentang "Pantai".', options: ['Saya pergi pantai.', 'Saya pantai pergi.', 'Pantai saya pergi.', 'Pergi saya pantai.'], answer: 0 }
-                    ]
+                    1: [{ q:'Salin huruf "d"', options:['d','b','p','q'], answer:0, isText:true, correctText:'d' },
+                        { q:'Salin perkataan "mama"', options:['mama','mama','mama','mama'], answer:0, isText:true, correctText:'mama' },
+                        { q:'Salin "rumah"', options:['rumah','rumah','rumah','rumah'], answer:0, isText:true, correctText:'rumah' },
+                        { q:'Salin "bapa"', options:['bapa','bapa','bapa','bapa'], answer:0, isText:true, correctText:'bapa' },
+                        { q:'Salin "kakak"', options:['kakak','kakak','kakak','kakak'], answer:0, isText:true, correctText:'kakak' }],
+                    2: [{ q:'Salin ayat: "Saya suka."', options:['Saya suka.','Saya suka.','Saya suka.','Saya suka.'], answer:0, isText:true, correctText:'saya suka' },
+                        { q:'Salin: "Ibu masak."', options:['Ibu masak.','Ibu masak.','Ibu masak.','Ibu masak.'], answer:0, isText:true, correctText:'ibu masak' },
+                        { q:'Salin: "Kucing berlari."', options:['Kucing berlari.','Kucing berlari.','Kucing berlari.','Kucing berlari.'], answer:0, isText:true, correctText:'kucing berlari' },
+                        { q:'Salin: "Adik menangis."', options:['Adik menangis.','Adik menangis.','Adik menangis.','Adik menangis.'], answer:0, isText:true, correctText:'adik menangis' },
+                        { q:'Salin: "Bapa membaca."', options:['Bapa membaca.','Bapa membaca.','Bapa membaca.','Bapa membaca.'], answer:0, isText:true, correctText:'bapa membaca' }],
+                    3: [{ q:'Tulis karangan pendek tentang "Keluarga" (pilih yang terbaik).', options:['Saya ada ayah dan ibu. Saya sayang mereka.','Saya suka main.','Saya pergi sekolah.','Saya makan.'], answer:0 },
+                        { q:'Bina ayat: "____ pergi ke sekolah." (pilih subjek yang betul)', options:['Saya','Kamu','Dia','Kita'], answer:0 },
+                        { q:'Lengkapkan: "Adik ____ nasi."', options:['makan','minum','tidur','main'], answer:0 },
+                        { q:'Pilih ayat yang gramatis.', options:['Saya sedang belajar.','Saya belajar sedang.','Belajar saya sedang.','Sedang saya belajar.'], answer:0 },
+                        { q:'Tulis ayat tentang "Pantai".', options:['Saya pergi pantai.','Saya pantai pergi.','Pantai saya pergi.','Pergi saya pantai.'], answer:0 }]
                 },
                 math: {
-                    1: [
-                        { q: 'Berapa 🍎🍎?', options: ['2', '3', '4', '5'], answer: 0 },
-                        { q: 'Nombor 5?', options: ['5', '6', '7', '8'], answer: 0 },
-                        { q: 'Kira: 1+1 = ?', options: ['2', '3', '4', '5'], answer: 0 },
-                        { q: 'Nombor 8?', options: ['8', '9', '10', '7'], answer: 0 },
-                        { q: 'Berapa ★★★?', options: ['3', '4', '5', '6'], answer: 0 }
-                    ],
-                    2: [
-                        { q: '3 + 4 = ?', options: ['7', '8', '9', '6'], answer: 0 },
-                        { q: '10 - 3 = ?', options: ['7', '8', '9', '6'], answer: 0 },
-                        { q: '5 × 2 = ?', options: ['10', '8', '6', '12'], answer: 0 },
-                        { q: '12 ÷ 3 = ?', options: ['4', '5', '6', '3'], answer: 0 },
-                        { q: '25 + 7 = ?', options: ['32', '33', '34', '35'], answer: 0 }
-                    ],
-                    3: [
-                        { q: 'Ali ada 15 guli, beri 7 kepada adik. Berapa baki?', options: ['8', '7', '6', '9'], answer: 0 },
-                        { q: 'Sebuah bas berisi 28 orang. Turun 12, naik 5. Berapa sekarang?', options: ['21', '22', '23', '24'], answer: 0 },
-                        { q: 'Jika 3 biji epal harga RM2, berapa harga 6 biji?', options: ['RM4', 'RM5', 'RM6', 'RM3'], answer: 0 },
-                        { q: '120 + 80 = ?', options: ['200', '210', '190', '180'], answer: 0 },
-                        { q: 'Sebuah segi empat tepat panjang 5cm, lebar 3cm. Luas?', options: ['15cm²', '16cm²', '14cm²', '13cm²'], answer: 0 }
-                    ]
+                    1: [{ q:'Berapa 🍎🍎?', options:['2','3','4','5'], answer:0 },
+                        { q:'Nombor 5?', options:['5','6','7','8'], answer:0 },
+                        { q:'Kira: 1+1 = ?', options:['2','3','4','5'], answer:0 },
+                        { q:'Nombor 8?', options:['8','9','10','7'], answer:0 },
+                        { q:'Berapa ★★★?', options:['3','4','5','6'], answer:0 }],
+                    2: [{ q:'3 + 4 = ?', options:['7','8','9','6'], answer:0 },
+                        { q:'10 - 3 = ?', options:['7','8','9','6'], answer:0 },
+                        { q:'5 × 2 = ?', options:['10','8','6','12'], answer:0 },
+                        { q:'12 ÷ 3 = ?', options:['4','5','6','3'], answer:0 },
+                        { q:'25 + 7 = ?', options:['32','33','34','35'], answer:0 }],
+                    3: [{ q:'Ali ada 15 guli, beri 7 kepada adik. Berapa baki?', options:['8','7','6','9'], answer:0 },
+                        { q:'Sebuah bas berisi 28 orang. Turun 12, naik 5. Berapa sekarang?', options:['21','22','23','24'], answer:0 },
+                        { q:'Jika 3 biji epal harga RM2, berapa harga 6 biji?', options:['RM4','RM5','RM6','RM3'], answer:0 },
+                        { q:'120 + 80 = ?', options:['200','210','190','180'], answer:0 },
+                        { q:'Sebuah segi empat tepat panjang 5cm, lebar 3cm. Luas?', options:['15cm²','16cm²','14cm²','13cm²'], answer:0 }]
                 }
             };
-            // Ambil template untuk skill & level, jika tiada, gunakan tahap 1
             let pool = templates[skill]?.[level] || templates[skill]?.[1] || [];
-            // Jika pool kurang dari count, ulang
-            while (pool.length < count) {
-                pool = pool.concat(pool);
-            }
-            // Pilih count soalan rawak
+            while (pool.length < count) pool = pool.concat(pool);
             const shuffled = pool.sort(() => Math.random() - 0.5);
             return shuffled.slice(0, count);
         }
@@ -987,10 +731,7 @@
         function showPracticeQuestion() {
             const state = practiceState;
             if (!state) return;
-            if (state.currentIndex >= state.questions.length) {
-                finishPractice();
-                return;
-            }
+            if (state.currentIndex >= state.questions.length) { finishPractice(); return; }
             const q = state.questions[state.currentIndex];
             const box = document.getElementById('practiceQuestion');
             const optDiv = document.getElementById('practiceOptions');
@@ -999,16 +740,13 @@
             const feedback = document.getElementById('practiceFeedback');
             feedback.textContent = '';
             state.answered = false;
-            // Reset timer
             clearInterval(state.timerInterval);
             state.timer = 10;
             document.getElementById('practiceTimer').textContent = state.timer;
-            // Tunjukkan soalan
             box.innerHTML = `<h3>Soalan ${state.currentIndex+1}/5</h3><p>${q.q}</p>`;
             optDiv.innerHTML = '';
             inputArea.style.display = 'none';
             if (q.isText) {
-                // Taip jawapan
                 inputArea.style.display = 'block';
                 document.getElementById('practiceTextInput').value = '';
                 document.getElementById('practiceTextInput').focus();
@@ -1021,17 +759,14 @@
                 });
             }
             prog.textContent = `Soalan ${state.currentIndex+1} / 5`;
-            // Mulakan timer
             state.timerInterval = setInterval(() => {
                 state.timer--;
                 document.getElementById('practiceTimer').textContent = state.timer;
                 if (state.timer <= 0) {
                     clearInterval(state.timerInterval);
-                    // Masa tamat => salah
                     if (!state.answered) {
                         state.answered = true;
                         const skill = state.skill;
-                        // Update stat salah
                         const user = getUser(currentUser);
                         if (user) {
                             const statKey = skill === 'read' ? 'membaca' : (skill === 'write' ? 'menulis' : 'mengira');
@@ -1040,7 +775,6 @@
                         }
                         state.allCorrect = false;
                         document.getElementById('practiceFeedback').innerHTML = '<span style="color:var(--red);">Masa tamat! Jawapan salah.</span>';
-                        // Seterusnya selepas 1.5s
                         setTimeout(() => {
                             state.currentIndex++;
                             showPracticeQuestion();
@@ -1064,7 +798,6 @@
                 state.correctCount++;
                 user.stats[statKey].betul++;
                 document.getElementById('practiceFeedback').innerHTML = '<span style="color:var(--green);">✅ Betul! 👍</span>';
-                // Confetti ringan
                 launchConfetti(6);
             } else {
                 state.allCorrect = false;
@@ -1072,7 +805,6 @@
                 document.getElementById('practiceFeedback').innerHTML = '<span style="color:var(--red);">❌ Salah. Cuba lagi.</span>';
             }
             updateUser(currentUser, user);
-            // Seterusnya selepas 1s
             setTimeout(() => {
                 state.currentIndex++;
                 showPracticeQuestion();
@@ -1116,19 +848,14 @@
             const skill = state.skill;
             const user = getUser(currentUser);
             const statKey = skill === 'read' ? 'membaca' : (skill === 'write' ? 'menulis' : 'mengira');
-            // Kira set
             user.stats[statKey].sets++;
-            // Jika semua betul, tambah set berturut-turut
             if (state.allCorrect && state.correctCount === state.questions.length) {
-                // Naikkan kiraan berturut-turut
                 const setKey = skill === 'read' ? 'setBerturutMembaca' : (skill === 'write' ? 'setBerturutMenulis' : 'setBerturutMengira');
                 user[setKey] = (user[setKey] || 0) + 1;
-                // Jika capai 5, naikkan tahap kemahiran (maks 3)
                 const tahapKey = skill === 'read' ? 'tahapMembaca' : (skill === 'write' ? 'tahapMenulis' : 'tahapMengira');
                 if (user[setKey] >= 5 && user[tahapKey] < 3) {
                     user[tahapKey]++;
-                    user[setKey] = 0; // reset selepas naik
-                    // Kemaskini tahap keseluruhan
+                    user[setKey] = 0;
                     user.tahapKeseluruhan = Math.min(user.tahapMembaca, user.tahapMenulis, user.tahapMengira);
                     document.getElementById('practiceFeedback').innerHTML = `<span style="color:var(--yellow);">🎉 Tahap ${getLevelName(user[tahapKey])} untuk ${statKey.charAt(0).toUpperCase()+statKey.slice(1)}!</span>`;
                     launchConfetti(20);
@@ -1136,26 +863,21 @@
                     document.getElementById('practiceFeedback').innerHTML = `<span style="color:var(--green);">🌟 Set lengkap! (${user[setKey]}/5 berturut-turut)</span>`;
                 }
             } else {
-                // Reset set berturut-turut jika tidak semua betul
                 const setKey = skill === 'read' ? 'setBerturutMembaca' : (skill === 'write' ? 'setBerturutMenulis' : 'setBerturutMengira');
                 user[setKey] = 0;
                 document.getElementById('practiceFeedback').innerHTML = '<span style="color:var(--text-light);">Latihan selesai. Teruskan usaha!</span>';
             }
             updateUser(currentUser, user);
-            // Kemaskini profil
             loadProfile();
-            // Tunjukkan butang kembali
             document.getElementById('practiceOptions').innerHTML = '';
             document.getElementById('practiceInputArea').style.display = 'none';
             document.getElementById('practiceQuestion').innerHTML = '<h3>🏁 Latihan Tamat</h3>';
             document.getElementById('practiceProgressText').textContent = 'Selesai!';
             document.getElementById('practiceTimer').textContent = '-';
-            // Tambah butang kembali
             const backBtn = document.createElement('button');
             backBtn.textContent = 'Kembali ke Pilihan';
             backBtn.onclick = () => { navigate('choose'); };
             document.getElementById('practiceOptions').appendChild(backBtn);
-            // Reset practiceState
             practiceState = null;
         }
 
@@ -1166,7 +888,7 @@
         }
 
         // ============================================================
-        // 8. PROGRESS PAGE
+        // 8. PROGRESS
         // ============================================================
         function loadProgress() {
             if (!currentUser) { navigate('signin'); return; }
@@ -1174,7 +896,7 @@
             if (!user) return;
             const container = document.getElementById('progressContent');
             const stats = user.stats;
-            let html = `
+            container.innerHTML = `
                 <div class="stat-grid">
                     <div class="stat-card"><i class="fas fa-book" style="color:var(--red);"></i> Membaca<br>Betul: ${stats.membaca.betul} | Salah: ${stats.membaca.salah} | Set: ${stats.membaca.sets}</div>
                     <div class="stat-card"><i class="fas fa-pencil-alt" style="color:var(--yellow);"></i> Menulis<br>Betul: ${stats.menulis.betul} | Salah: ${stats.menulis.salah} | Set: ${stats.menulis.sets}</div>
@@ -1186,32 +908,32 @@
                 <p><strong>Menulis:</strong> ${getLevelName(user.tahapMenulis)} (Set berturut: ${user.setBerturutMenulis}/5)</p>
                 <p><strong>Mengira:</strong> ${getLevelName(user.tahapMengira)} (Set berturut: ${user.setBerturutMengira}/5)</p>
             `;
-            container.innerHTML = html;
         }
 
         // ============================================================
-        // 9. CONFETTI RINGAN
+        // 9. CONFETTI
         // ============================================================
         function launchConfetti(count = 10) {
             const container = document.getElementById('confettiContainer');
-            const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4aa3df', '#ff9f43', '#a29bfe'];
-            for (let i = 0; i < count; i++) {
+            const colors = ['#ff6b6b','#ffd93d','#6bcb77','#4aa3df','#ff9f43','#a29bfe'];
+            for (let i=0; i<count; i++) {
                 const el = document.createElement('div');
                 el.className = 'confetti';
-                el.style.left = Math.random() * 100 + '%';
-                el.style.background = colors[Math.floor(Math.random() * colors.length)];
-                el.style.width = (6 + Math.random() * 10) + 'px';
-                el.style.height = (6 + Math.random() * 10) + 'px';
-                el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
-                el.style.animationDelay = Math.random() * 0.5 + 's';
+                el.style.left = Math.random()*100+'%';
+                el.style.background = colors[Math.floor(Math.random()*colors.length)];
+                el.style.width = (6+Math.random()*10)+'px';
+                el.style.height = (6+Math.random()*10)+'px';
+                el.style.animationDuration = (1.5+Math.random()*2)+'s';
+                el.style.animationDelay = Math.random()*0.5+'s';
                 container.appendChild(el);
                 setTimeout(() => el.remove(), 3000);
             }
         }
 
         // ============================================================
-        // 10. NAVIGATION LISTENERS & INIT
+        // 10. INIT
         // ============================================================
+        // Navigasi untuk pautan data-page (kecuali "Utama" sudah dikendalikan)
         document.querySelectorAll('[data-page]').forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -1224,7 +946,6 @@
             });
         });
 
-        // Paparan awal
         updateNav();
         const session = getLoggedIn();
         if (session) {
@@ -1234,10 +955,6 @@
         } else {
             navigate('landing');
         }
-
-        // Jika profil dimuatkan selepas log masuk
-        // Tambah pemantau untuk butang "Mula Latihan" di profil
-        console.log('Saya Mahir sedia! 🌳');
     </script>
 </body>
 </html>
