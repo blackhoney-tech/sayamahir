@@ -104,12 +104,12 @@
         </div>
     </nav>
 
-    <!-- ===== MODAL LUPA KATA LALUAN (guna email) ===== -->
+    <!-- ===== MODAL LUPA KATA LALUAN (tanpa paparan kata laluan) ===== -->
     <div id="forgotModal" class="modal">
         <div class="modal-content">
             <span class="close" id="closeForgotModal">&times;</span>
             <h2><i class="fas fa-envelope"></i> Lupa Kata Laluan</h2>
-            <p>Masukkan email yang anda daftarkan. Kami akan hantar kata laluan anda ke email tersebut (simulasi).</p>
+            <p>Masukkan email yang anda daftarkan. Kami akan hantar kata laluan anda ke email tersebut.</p>
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" id="forgotEmail" placeholder="contoh@email.com" />
@@ -484,7 +484,7 @@
         }
 
         // ============================================================
-        // 4. LUPA KATA LALUAN (guna email)
+        // 4. LUPA KATA LALUAN (tanpa pendedahan kata laluan di skrin)
         // ============================================================
         const forgotModal = document.getElementById('forgotModal');
         const closeForgot = document.getElementById('closeForgotModal');
@@ -514,13 +514,20 @@
                 forgotResult.innerHTML = '<span style="color:var(--red);">Email tidak dijumpai dalam sistem.</span>';
                 return;
             }
-            // Simulasi menghantar email – paparkan kata laluan dalam modal
+            // Simulasi hantar email – tidak papar kata laluan di skrin
+            // Untuk debugging, cetak kata laluan ke console (F12 -> Console)
+            console.log(`[Saya Mahir] Kata laluan untuk ${email}: ${user.password}`);
+            // Papar mesej berjaya tanpa kata laluan
             forgotResult.innerHTML = `
                 <span style="color:var(--green);">
-                    <i class="fas fa-check-circle"></i> Kata laluan telah dihantar ke <strong>${email}</strong>.<br>
-                    Kata laluan anda: <strong>${user.password}</strong>
+                    <i class="fas fa-check-circle"></i> Email telah dihantar ke <strong>${email}</strong>.<br>
+                    Sila semak kotak masuk anda (termasuk folder Spam).
                 </span>
             `;
+            // Tutup modal secara automatik selepas 5 saat (opsional)
+            setTimeout(() => {
+                forgotModal.classList.remove('show');
+            }, 5000);
         });
 
         // ============================================================
@@ -553,7 +560,6 @@
         // 6. PLACEMENT TEST (sama)
         // ============================================================
         function generatePlacementQuestions() {
-            // ... (sama seperti sebelum ini, tidak diubah)
             const qs = [];
             qs.push({ skill: 'read', q: 'Huruf apakah ini? "A"', options: ['A','B','C','D'], answer:0 });
             qs.push({ skill: 'read', q: 'Huruf apakah ini? "M"', options: ['N','M','L','K'], answer:1 });
@@ -709,7 +715,6 @@
         }
 
         function generatePracticeQuestions(skill, level, count) {
-            // Sama seperti sebelumnya (tidak diubah)
             const templates = {
                 read: {
                     1: [{ q:'Huruf "B" disebut?', options:['Be','De','Pe','Te'], answer:0 },
